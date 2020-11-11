@@ -12,7 +12,7 @@ import (
 )
 
 // CreateAlias create an alias
-func (c *VirtualEnvironmentClient) CreateAlias(d *VirtualEnvironmentAliasCreateRequestBody) error  {
+func (c *VirtualEnvironmentClient) CreateAlias(d *VirtualEnvironmentClusterAliasCreateRequestBody) error  {
 	return c.DoRequest(hmPOST, "cluster/firewall/aliases", d, nil)
 }
 
@@ -22,8 +22,8 @@ func (c *VirtualEnvironmentClient) DeleteAlias(id string) error {
 }
 
 // GetAlias retrieves an alias
-func (c *VirtualEnvironmentClient) GetAlias(id string) (*VirtualEnvironmentAliasGetResponseData, error) {
-	resBody := &VirtualEnvironmentAliasGetResponseBody{}
+func (c *VirtualEnvironmentClient) GetAlias(id string) (*VirtualEnvironmentClusterAliasGetResponseData, error) {
+	resBody := &VirtualEnvironmentClusterAliasGetResponseBody{}
 	err := c.DoRequest(hmGET, fmt.Sprintf("cluster/firewall/aliases/%s", url.PathEscape(id)), nil, resBody)
 
 	if err != nil {
@@ -38,8 +38,8 @@ func (c *VirtualEnvironmentClient) GetAlias(id string) (*VirtualEnvironmentAlias
 }
 
 // ListAlias retrieves a list of aliases.
-func (c *VirtualEnvironmentClient) ListAliases() ([]*VirtualEnvironmentAliasGetResponseData, error) {
-	resBody := &VirtualEnvironmentAliasListResponseBody{}
+func (c *VirtualEnvironmentClient) ListAliases() ([]*VirtualEnvironmentClusterAliasGetResponseData, error) {
+	resBody := &VirtualEnvironmentClusterAliasListResponseBody{}
 	err := c.DoRequest(hmGET, "cluster/firewall/aliases", nil, resBody)
 
 	if err != nil {
@@ -58,6 +58,6 @@ func (c *VirtualEnvironmentClient) ListAliases() ([]*VirtualEnvironmentAliasGetR
 }
 
 // UpdateAlias updates an alias.
-func (c *VirtualEnvironmentClient) UpdateAlias(id string, d *VirtualEnvironmentAliasUpdateRequestBody) error {
+func (c *VirtualEnvironmentClient) UpdateAlias(id string, d *VirtualEnvironmentClusterAliasUpdateRequestBody) error {
 	return c.DoRequest(hmPUT, fmt.Sprintf("cluster/firewall/aliases/%s", url.PathEscape(id)), d, nil)
 }

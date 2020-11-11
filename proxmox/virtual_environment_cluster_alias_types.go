@@ -4,34 +4,34 @@
 
 package proxmox
 
-// VirtualEnvironmentAliasCreateRequestBody contains the data for an alias create request.
-type VirtualEnvironmentAliasCreateRequestBody struct {
+// VirtualEnvironmentClusterAliasCreateRequestBody contains the data for an alias create request.
+type VirtualEnvironmentClusterAliasCreateRequestBody struct {
 	Comment *string `json:"comment,omitempty" url:"comment,omitempty"`
 	Name    string  `json:"name" url:"name"`
 	CIDR    string  `json:"cidr" url:"cidr"`
 }
 
-// VirtualEnvironmentAliasGetResponseBody contains the body from an alias get response.
-type VirtualEnvironmentAliasGetResponseBody struct {
-	Data *VirtualEnvironmentAliasGetResponseData `json:"data,omitempty"`
+// VirtualEnvironmentClusterAliasGetResponseBody contains the body from an alias get response.
+type VirtualEnvironmentClusterAliasGetResponseBody struct {
+	Data *VirtualEnvironmentClusterAliasGetResponseData `json:"data,omitempty"`
 }
 
-// VirtualEnvironmentAliasGetResponseData contains the data from an alias get response.
-type VirtualEnvironmentAliasGetResponseData struct {
+// VirtualEnvironmentClusterAliasGetResponseData contains the data from an alias get response.
+type VirtualEnvironmentClusterAliasGetResponseData struct {
 	Comment		*string `json:"comment,omitempty" url:"comment,omitempty"`
 	Name		string  `json:"name" url:"name"`
 	CIDR		string  `json:"cidr" url:"cidr"`
-	Digest  	*string  `json:"digest" url:"digest"`
+	Digest  	*string `json:"digest" url:"digest"`
 	IPVersion	int		`json:"ipversion" url:"ipversion"`
 }
 
-// VirtualEnvironmentAliasGetResponseData contains the data from an alias get response.
-type VirtualEnvironmentAliasListResponseBody struct {
-	Data []*VirtualEnvironmentAliasGetResponseData `json:"data,omitempty"`
+// VirtualEnvironmentClusterAliasListResponseBody contains the data from an alias get response.
+type VirtualEnvironmentClusterAliasListResponseBody struct {
+	Data []*VirtualEnvironmentClusterAliasGetResponseData `json:"data,omitempty"`
 }
 
-// VirtualEnvironmentAliasUpdateRequestBody contains the data for an alias update request.
-type VirtualEnvironmentAliasUpdateRequestBody struct {
+// VirtualEnvironmentClusterAliasUpdateRequestBody contains the data for an alias update request.
+type VirtualEnvironmentClusterAliasUpdateRequestBody struct {
 	Comment *string `json:"comment,omitempty" url:"comment,omitempty"`
 	ReName	string  `json:"rename" url:"rename"`
 	CIDR	string  `json:"cidr" url:"cidr"`
