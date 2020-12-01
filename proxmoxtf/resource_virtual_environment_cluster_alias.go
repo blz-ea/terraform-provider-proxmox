@@ -48,7 +48,7 @@ func resourceVirtualEnvironmentClusterAlias() *schema.Resource {
 }
 
 func resourceVirtualEnvironmentClusterAliasCreate(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -77,7 +77,7 @@ func resourceVirtualEnvironmentClusterAliasCreate(d *schema.ResourceData, m inte
 }
 
 func resourceVirtualEnvironmentClusterAliasRead(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -114,7 +114,7 @@ func resourceVirtualEnvironmentClusterAliasRead(d *schema.ResourceData, m interf
 }
 
 func resourceVirtualEnvironmentClusterAliasUpdate(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -145,7 +145,7 @@ func resourceVirtualEnvironmentClusterAliasUpdate(d *schema.ResourceData, m inte
 
 
 func resourceVirtualEnvironmentClusterAliasDelete(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
