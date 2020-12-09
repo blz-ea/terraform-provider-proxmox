@@ -81,7 +81,7 @@ func resourceVirtualEnvironmentClusterAliasRead(d *schema.ResourceData, m interf
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	name := d.Id()
