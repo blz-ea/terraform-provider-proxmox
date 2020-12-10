@@ -19,8 +19,8 @@ func TestAccResourceVirtualEnvironmentAlias_CreateAndUpdate(t *testing.T) {
 	tfNode := "proxmox_virtual_environment_cluster_alias.alias"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testutils.PreCheck(t, nil) },
-		Providers: testutils.GetProviders(),
+		PreCheck:     func() { testutils.PreCheck(t, nil) },
+		Providers:    testutils.GetProviders(),
 		CheckDestroy: CheckAliasDestroyed,
 		Steps: []resource.TestStep{
 			// Create alias
