@@ -223,7 +223,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		veConfig[mkProviderVirtualEnvironmentUsername].(string),
 		veConfig[mkProviderVirtualEnvironmentPassword].(string),
 		veConfig[mkProviderVirtualEnvironmentOTP].(string),
-		true,
+		veConfig[mkProviderVirtualEnvironmentInsecure].(bool),
 	)
 
 	if err != nil {
