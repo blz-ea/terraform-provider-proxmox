@@ -51,7 +51,7 @@ func CheckIPSetExists(IPSetContent proxmox.VirtualEnvironmentClusterIPSetContent
 				}
 
 				if !reflect.DeepEqual(&v.NoMatch, &ReadIPSetContent[i].NoMatch) {
-					return fmt.Errorf("IPSet with Name=%s contains not expected NoMatch=%t, expected %t", id, ReadIPSetContent[i].NoMatch, v.NoMatch)
+					return fmt.Errorf("IPSet with Name=%s contains not expected NoMatch=%p, expected %p", id, ReadIPSetContent[i].NoMatch, v.NoMatch)
 				}
 			}
 
