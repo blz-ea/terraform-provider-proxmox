@@ -78,7 +78,7 @@ func resourceVirtualEnvironmentClusterIPSet() *schema.Resource {
 }
 
 func resourceVirtualEnvironmentClusterIPSetCreate(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -136,7 +136,7 @@ func resourceVirtualEnvironmentClusterIPSetCreate(d *schema.ResourceData, m inte
 }
 
 func resourceVirtualEnvironmentClusterIPSetRead(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -187,7 +187,7 @@ func resourceVirtualEnvironmentClusterIPSetRead(d *schema.ResourceData, m interf
 }
 
 func resourceVirtualEnvironmentClusterIPSetUpdate(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
@@ -217,7 +217,7 @@ func resourceVirtualEnvironmentClusterIPSetUpdate(d *schema.ResourceData, m inte
 
 
 func resourceVirtualEnvironmentClusterIPSetDelete(d *schema.ResourceData, m interface{}) error {
-	config := m.(providerConfiguration)
+	config := m.(ProviderConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {
