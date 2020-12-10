@@ -42,7 +42,7 @@ func dataSourceVirtualEnvironmentClusterAlias() *schema.Resource {
 }
 
 func dataSourceVirtualEnvironmentAliasRead(d *schema.ResourceData, m interface{}) error {
-	config := m.(ProviderConfiguration)
+	config := m.(providerConfiguration)
 	veClient, err := config.GetVEClient()
 
 	if err != nil {

@@ -33,7 +33,7 @@ func TestResourceVirtualEnvironmentAliasSchema(t *testing.T) {
 	})
 
 	testValueTypes(t, s, map[string]schema.ValueType{
-		mkResourceVirtualEnvironmentClusterAliasName: 		schema.TypeString,
+		mkResourceVirtualEnvironmentClusterAliasName: 	   schema.TypeString,
 		mkResourceVirtualEnvironmentClusterAliasCIDR:      schema.TypeString,
 		mkResourceVirtualEnvironmentClusterAliasComment:   schema.TypeString,
 	})
