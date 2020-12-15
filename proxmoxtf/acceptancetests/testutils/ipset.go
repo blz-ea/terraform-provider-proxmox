@@ -97,8 +97,8 @@ resource "proxmox_virtual_environment_cluster_ipset" "ipset" {
 	name    = "{{.Name}}"
 	comment = "{{.Comment}}"
 	{{range .CIDR}}
-	ipset {
-		cidr = "{{.CIDR}}"
+	cidr {
+		name = "{{.CIDR}}"
 		comment = "{{.Comment}}"
 		{{if .NoMatch}}
 		nomatch = "{{.NoMatch}}"
