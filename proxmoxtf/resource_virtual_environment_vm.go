@@ -7,6 +7,7 @@ package proxmoxtf
 import (
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -1503,7 +1504,6 @@ func resourceVirtualEnvironmentVMCreateCustom(d *schema.ResourceData, m interfac
 		KeyboardLayout:      &keyboardLayout,
 		NetworkDevices:      networkDeviceObjects,
 		OSType:              &operatingSystemType,
-		PoolID:              &poolID,
 		SCSIDevices:         diskDeviceObjects,
 		SCSIHardware:        &scsiHardware,
 		SerialDevices:       serialDevices,
@@ -1530,6 +1530,10 @@ func resourceVirtualEnvironmentVMCreateCustom(d *schema.ResourceData, m interfac
 
 	if name != "" {
 		createBody.Name = &name
+	}
+
+	if poolID != "" {
+		createBody.PoolID = &poolID
 	}
 
 	err = veClient.CreateVM(nodeName, createBody)
@@ -2519,7 +2523,9 @@ func resourceVirtualEnvironmentVMReadCustom(d *schema.ResourceData, m interface{
 		ipConfigList[ipConfigIndex] = ipConfigItem
 	}
 
-	initialization[mkResourceVirtualEnvironmentVMInitializationIPConfig] = ipConfigList[:ipConfigLast+1]
+	if ipConfigLast != -1 {
+		initialization[mkResourceVirtualEnvironmentVMInitializationIPConfig] = ipConfigList[:ipConfigLast+1]
+	}
 
 	if vmConfig.CloudInitPassword != nil || vmConfig.CloudInitSSHKeys != nil || vmConfig.CloudInitUsername != nil {
 		initializationUserAccount := map[string]interface{}{}
@@ -2551,8 +2557,6 @@ func resourceVirtualEnvironmentVMReadCustom(d *schema.ResourceData, m interface{
 		} else {
 			initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
 		}
-	} else {
-		initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
 	}
 
 	currentInitialization := d.Get(mkResourceVirtualEnvironmentVMInitialization).([]interface{})
@@ -3011,7 +3015,12 @@ func resourceVirtualEnvironmentVMUpdate(d *schema.ResourceData, m interface{}) e
 	}
 
 	name := d.Get(mkResourceVirtualEnvironmentVMName).(string)
-	updateBody.Name = &name
+
+	if name == "" {
+		delete = append(delete, "name")
+	} else {
+		updateBody.Name = &name
+	}
 
 	if d.HasChange(mkResourceVirtualEnvironmentVMTabletDevice) {
 		tabletDevice := proxmox.CustomBool(d.Get(mkResourceVirtualEnvironmentVMTabletDevice).(bool))
@@ -3404,10 +3413,17 @@ func resourceVirtualEnvironmentVMDelete(d *schema.ResourceData, m interface{}) e
 		forceStop := proxmox.CustomBool(true)
 		shutdownTimeout := 300
 
-		err = veClient.ShutdownVM(nodeName, vmID, &proxmox.VirtualEnvironmentVMShutdownRequestBody{
-			ForceStop: &forceStop,
-			Timeout:   &shutdownTimeout,
-		})
+		// For acceptance tests we force VM to stop rather than wait for shutdown
+		// Proxmox unable to shutdown VMs due to the lack of operating system
+		// and qemu guest agent
+		if _, ok := os.LookupEnv("TF_ACC_VM_FORCE_STOP"); ok {
+			err = veClient.StopVM(nodeName, vmID)
+		} else {
+			err = veClient.ShutdownVM(nodeName, vmID, &proxmox.VirtualEnvironmentVMShutdownRequestBody{
+				ForceStop: &forceStop,
+				Timeout:   &shutdownTimeout,
+			})
+		}
 
 		if err != nil {
 			return err
