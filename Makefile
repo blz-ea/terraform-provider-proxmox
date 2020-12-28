@@ -1,9 +1,14 @@
+OS = $(shell go env GOOS)
+ARCH = $(shell go env GOARCH)
 GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 ACC_TEST?=$$(go list ./proxmoxtf/acceptancetests |grep -v 'vendor')
 NAME=$$(grep TerraformProviderName proxmoxtf/version.go | grep -o -e 'terraform-provider-[a-z]*')
 TARGETS=darwin linux windows
 TERRAFORM_PLUGIN_EXTENSION=
 VERSION=$$(grep TerraformProviderVersion proxmoxtf/version.go | grep -o -e '[0-9]\.[0-9]\.[0-9]')
+DEV_VERSION = 99.0.0
+PROVIDER_PATH = registry.terraform.io/blz-ea/proxmox/$(DEV_VERSION)/$(OS)_$(ARCH)/
+PROVIDER_PATH_WINDOWS = registry.terraform.io\blz-ea\proxmox\$(DEV_VERSION)\$(OS)_$(ARCH)\
 
 ifeq ($(OS),Windows_NT)
 	TERRAFORM_CACHE_DIRECTORY=$$(cygpath -u "$(APPDATA)")/terraform.d/plugins
@@ -26,31 +31,32 @@ TERRAFORM_PLUGIN_EXECUTABLE=$(TERRAFORM_PLUGIN_DIRECTORY)/$(NAME)_v$(VERSION)_x4
 default: build
 
 build:
-	go build -o "bin/$(NAME)_v$(VERSION)-custom_x4"
+	fmtcheck
+	go install
 
-example: example-init example-apply example-apply example-destroy
-
-example-apply:
-	cd ./example && terraform apply -auto-approve
-
-example-destroy:
-	cd ./example && terraform destroy -auto-approve
-
-example-init:
-	rm -f "example/$(NAME)_v"*
-	go build -o "example/$(NAME)_v$(VERSION)-custom_x4"
-
-	mkdir -p "$(TERRAFORM_PLUGIN_DIRECTORY)"
-	rm -f "$(TERRAFORM_PLUGIN_EXECUTABLE)"
-	cp "example/$(NAME)_v$(VERSION)-custom_x4" "$(TERRAFORM_PLUGIN_EXECUTABLE)"
-
-	cd ./example && terraform init
-
-example-plan:
-	cd ./example && terraform plan
+build-install-dev:
+	go build -o terraform-provider-proxmox_$(DEV_VERSION)
+ifeq ($(OS), darwin)
+	mkdir -p ~/.terraform.d/plugins/$(PROVIDER_PATH)
+	mv terraform-provider-proxmox_$(DEV_VERSION) ~/.terraform.d/plugins/$(PROVIDER_PATH)
+endif
+ifeq ($(OS), linux)
+	mkdir -p ~/.terraform.d/plugins/$(PROVIDER_PATH)
+	mv terraform-provider-proxmox_$(DEV_VERSION) ~/.terraform.d/plugins/$(PROVIDER_PATH)
+endif
+ifeq ($(OS), windows)
+	mkdir %APPDATA%\terraform.d\plugins\$(PROVIDER_PATH_WINDOWS)
+	mv terraform-provider-proxmox_$(DEV_VERSION) %APPDATA%\terraform.d\plugins\$(PROVIDER_PATH_WINDOWS)
+endif
 
 fmt:
 	gofmt -s -w $(GOFMT_FILES)
+
+fmtcheck:
+	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
+
+errcheck:
+	@sh -c "'$(CURDIR)/scripts/errcheck.sh'"
 
 init:
 	go get ./...
@@ -73,4 +79,4 @@ $(TARGETS):
 		-j "dist/$(NAME)_v$(VERSION)-custom_$@_amd64.zip" \
 		"dist/$@/$(NAME)_v$(VERSION)-custom_x4"
 
-.PHONY: build example example-apply example-destroy example-init example-plan fmt init targets test $(TARGETS)
+.PHONY: build build-and-install-dev-version example example-apply example-destroy example-init example-plan fmt init targets test testacc $(TARGETS)

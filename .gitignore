@@ -35,3 +35,4 @@ modules-dev/
 !command/test-fixtures/**/*.tfstate
 !command/test-fixtures/**/.terraform/
 /.env
+terraform-provider-proxmox_*
