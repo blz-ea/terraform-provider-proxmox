@@ -54,6 +54,7 @@ const (
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv4Gateway = ""
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv6Address = ""
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv6Gateway = ""
+	dvResourceVirtualEnvironmentVMInitializationType				= ""
 	dvResourceVirtualEnvironmentVMInitializationUserAccountPassword = ""
 	dvResourceVirtualEnvironmentVMInitializationUserDataFileID      = ""
 	dvResourceVirtualEnvironmentVMKeyboardLayout                    = "en-us"
@@ -132,6 +133,7 @@ const (
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6        = "ipv6"
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6Address = "address"
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6Gateway = "gateway"
+	mkResourceVirtualEnvironmentVMInitializationType				= "type"
 	mkResourceVirtualEnvironmentVMInitializationUserAccount         = "user_account"
 	mkResourceVirtualEnvironmentVMInitializationUserAccountKeys     = "keys"
 	mkResourceVirtualEnvironmentVMInitializationUserAccountPassword = "password"
@@ -674,6 +676,14 @@ func resourceVirtualEnvironmentVM() *schema.Resource {
 							ForceNew:     true,
 							Default:      dvResourceVirtualEnvironmentVMInitializationUserDataFileID,
 							ValidateFunc: getFileIDValidator(),
+						},
+						mkResourceVirtualEnvironmentVMInitializationType: {
+							Type:         schema.TypeString,
+							Description:  "The cloud-init configuration format",
+							Optional:     true,
+							ForceNew:     true,
+							Default:      dvResourceVirtualEnvironmentVMInitializationType,
+							ValidateFunc: getCloudInitTypeValidator(),
 						},
 					},
 				},
@@ -1858,6 +1868,12 @@ func resourceVirtualEnvironmentVMGetCloudInitConfig(d *schema.ResourceData, m in
 				UserVolume: &initializationUserDataFileID,
 			}
 		}
+
+		initializationType := initializationBlock[mkResourceVirtualEnvironmentVMInitializationType].(string)
+
+		if initializationType != "" {
+			initializationConfig.Type = &initializationType
+		}
 	}
 
 	return initializationConfig, nil
@@ -2209,14 +2225,16 @@ func resourceVirtualEnvironmentVMReadCustom(d *schema.ResourceData, m interface{
 			cdromBlock[mkResourceVirtualEnvironmentVMCDROMEnabled] = vmConfig.IDEDevice3.Enabled
 			cdromBlock[mkResourceVirtualEnvironmentVMCDROMFileID] = vmConfig.IDEDevice3.FileVolume
 
-			isCurrentCDROMFileId := currentCDROM[0].(map[string]interface{})
+			if len(currentCDROM) > 0 {
+				isCurrentCDROMFileId := currentCDROM[0].(map[string]interface{})
 
-			if isCurrentCDROMFileId[mkResourceVirtualEnvironmentVMCDROMFileID] == "" {
-				cdromBlock[mkResourceVirtualEnvironmentVMCDROMFileID] = ""
-			}
+				if isCurrentCDROMFileId[mkResourceVirtualEnvironmentVMCDROMFileID] == "" {
+					cdromBlock[mkResourceVirtualEnvironmentVMCDROMFileID] = ""
+				}
 
-			if isCurrentCDROMFileId[mkResourceVirtualEnvironmentVMCDROMEnabled] == false {
-				cdromBlock[mkResourceVirtualEnvironmentVMCDROMEnabled] = false
+				if isCurrentCDROMFileId[mkResourceVirtualEnvironmentVMCDROMEnabled] == false {
+					cdromBlock[mkResourceVirtualEnvironmentVMCDROMEnabled] = false
+				}
 			}
 
 			cdrom[0] = cdromBlock
@@ -2557,6 +2575,14 @@ func resourceVirtualEnvironmentVMReadCustom(d *schema.ResourceData, m interface{
 		} else {
 			initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
 		}
+	}  else if len(initialization) > 0 {
+		initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
+	}
+
+	if vmConfig.CloudInitType != nil {
+		initialization[mkResourceVirtualEnvironmentVMInitializationType] = *vmConfig.CloudInitType
+	} else if len(initialization) > 0 {
+		initialization[mkResourceVirtualEnvironmentVMInitializationType] = ""
 	}
 
 	currentInitialization := d.Get(mkResourceVirtualEnvironmentVMInitialization).([]interface{})
@@ -2919,7 +2945,9 @@ func resourceVirtualEnvironmentVMReadPrimitiveValues(d *schema.ResourceData, m i
 		}
 	}
 
-	d.Set(mkResourceVirtualEnvironmentVMStarted, vmStatus.Status == "running")
+	if d.Get(mkResourceVirtualEnvironmentVMTemplate).(bool) != true {
+		d.Set(mkResourceVirtualEnvironmentVMStarted, vmStatus.Status == "running")
+	}
 
 	currentTabletDevice := d.Get(mkResourceVirtualEnvironmentVMTabletDevice).(bool)
 

@@ -201,6 +201,7 @@ output "ubuntu_vm_public_key" {
         * `password` - (Optional) The SSH password.
         * `username` - (Optional) The SSH username.
     * `user_data_file_id` - (Optional) The identifier for a file containing custom user data (conflicts with `user_account`).
+    * `type` - (Optional) Specifies the cloud-init configuration format. The default depends on the configured operating system type (`ostype`. We use the `nocloud` format for Linux, and `configdrive2` for windows.
 * `keyboard_layout` - (Optional) The keyboard layout (defaults to `en-us`).
     * `da` - Danish.
     * `de` - German.
