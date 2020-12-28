@@ -2,9 +2,9 @@ package acceptancetests
 
 import (
 	"fmt"
-	"github.com/danitso/terraform-provider-proxmox/proxmox"
-	"github.com/danitso/terraform-provider-proxmox/proxmoxtf"
-	"github.com/danitso/terraform-provider-proxmox/proxmoxtf/acceptancetests/testutils"
+	"github.com/blz-ea/terraform-provider-proxmox/proxmox"
+	"github.com/blz-ea/terraform-provider-proxmox/proxmoxtf"
+	"github.com/blz-ea/terraform-provider-proxmox/proxmoxtf/acceptancetests/testutils"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"strings"

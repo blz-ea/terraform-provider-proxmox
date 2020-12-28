@@ -1,7 +1,7 @@
 package testutils
 
 import (
-	"github.com/danitso/terraform-provider-proxmox/proxmoxtf"
+	"github.com/blz-ea/terraform-provider-proxmox/proxmoxtf"
 	"github.com/hashicorp/terraform/helper/acctest"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"

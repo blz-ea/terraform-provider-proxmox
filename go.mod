@@ -1,4 +1,4 @@
-module github.com/danitso/terraform-provider-proxmox
+module github.com/blz-ea/terraform-provider-proxmox
 
 go 1.13
 

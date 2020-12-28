@@ -5,7 +5,7 @@
 package main
 
 import (
-	"github.com/danitso/terraform-provider-proxmox/proxmoxtf"
+	"github.com/blz-ea/terraform-provider-proxmox/proxmoxtf"
 	"github.com/hashicorp/terraform/plugin"
 	"github.com/hashicorp/terraform/terraform"
 )
