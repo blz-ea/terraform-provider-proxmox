@@ -19,8 +19,8 @@ func TestAccResourceVirtualEnvironmentVM_CreateAndUpdate(t *testing.T) {
 	tfNode := "proxmox_virtual_environment_vm.vm"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testutils.PreCheck(t, nil) },
-		Providers: testutils.GetProviders(),
+		PreCheck:     func() { testutils.PreCheck(t, nil) },
+		Providers:    testutils.GetProviders(),
 		CheckDestroy: CheckVMDestroyed,
 		Steps: []resource.TestStep{
 			// Create empty VM
@@ -53,7 +53,7 @@ func TestAccResourceVirtualEnvironmentVM_CreateAndUpdate(t *testing.T) {
 			// - Add to Pool
 			{
 				Config: testutils.HclVMResource(map[string]string{
-					"Name": "AccTestVM",
+					"Name":   "AccTestVM",
 					"PoolID": "test-pool",
 				}),
 				Check: resource.ComposeTestCheckFunc(

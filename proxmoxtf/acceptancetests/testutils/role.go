@@ -14,8 +14,8 @@ import (
 // - (1) exists in the state
 // - (2) exist in Proxmox VE
 // - (3) has correct privileges
-func CheckRole(expectedPrivileges []string) resource.TestCheckFunc  {
-	return func (s *terraform.State) error {
+func CheckRole(expectedPrivileges []string) resource.TestCheckFunc {
+	return func(s *terraform.State) error {
 		res, ok := s.RootModule().Resources["proxmox_virtual_environment_role.role"]
 
 		if !ok {
@@ -65,7 +65,7 @@ func readRole(clients proxmoxtf.ProviderConfiguration, identifier string) (*prox
 }
 
 // HclRoleResource HCL describing of a PVE role resource
-func HclRoleResource(name string, privileges []string) string  {
+func HclRoleResource(name string, privileges []string) string {
 
 	if name == "" {
 		panic("Parameter: `name` cannot be empty")

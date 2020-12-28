@@ -14,7 +14,7 @@ import (
 // - (2) exist in Proxmox VE
 // - (3) has the correct name
 func CheckAliasExists(expectedName string) resource.TestCheckFunc {
-	return func (s *terraform.State) error {
+	return func(s *terraform.State) error {
 		res, ok := s.RootModule().Resources["proxmox_virtual_environment_cluster_alias.alias"]
 		if !ok {
 			return fmt.Errorf("Did not find the alias in the TF state")
@@ -53,9 +53,8 @@ func readAlias(clients proxmoxtf.ProviderConfiguration, identifier string) (*pro
 	return response, nil
 }
 
-
 // HclAliasResource HCL describing of a PVE alias resource
-func HclAliasResource(name string, cidr string, comment string) string  {
+func HclAliasResource(name string, cidr string, comment string) string {
 
 	if name == "" {
 		panic("Parameter: `name` cannot be empty")

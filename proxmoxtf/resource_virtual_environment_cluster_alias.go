@@ -11,37 +11,37 @@ import (
 )
 
 const (
-	dvResourceVirtualEnvironmentClusterAliasComment 	= ""
+	dvResourceVirtualEnvironmentClusterAliasComment = ""
 
-	mkResourceVirtualEnvironmentClusterAliasName 		= "name"
-	mkResourceVirtualEnvironmentClusterAliasCIDR 		= "cidr"
-	mkResourceVirtualEnvironmentClusterAliasComment     = "comment"
+	mkResourceVirtualEnvironmentClusterAliasName    = "name"
+	mkResourceVirtualEnvironmentClusterAliasCIDR    = "cidr"
+	mkResourceVirtualEnvironmentClusterAliasComment = "comment"
 )
 
 func resourceVirtualEnvironmentClusterAlias() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			mkResourceVirtualEnvironmentClusterAliasName: {
-				Type: schema.TypeString,
+				Type:        schema.TypeString,
 				Description: "Alias name",
-				Required: true,
-				ForceNew: false,
+				Required:    true,
+				ForceNew:    false,
 			},
 			mkResourceVirtualEnvironmentClusterAliasCIDR: {
-				Type: schema.TypeString,
+				Type:        schema.TypeString,
 				Description: "IP/CIDR block",
-				Required: true,
-				ForceNew: false,
+				Required:    true,
+				ForceNew:    false,
 			},
 			mkResourceVirtualEnvironmentClusterAliasComment: {
-				Type: schema.TypeString,
+				Type:        schema.TypeString,
 				Description: "Alias comment",
-				Optional: true,
-				Default: dvResourceVirtualEnvironmentClusterAliasComment,
+				Optional:    true,
+				Default:     dvResourceVirtualEnvironmentClusterAliasComment,
 			},
 		},
 		Create: resourceVirtualEnvironmentClusterAliasCreate,
-		Read: resourceVirtualEnvironmentClusterAliasRead,
+		Read:   resourceVirtualEnvironmentClusterAliasRead,
 		Update: resourceVirtualEnvironmentClusterAliasUpdate,
 		Delete: resourceVirtualEnvironmentClusterAliasDelete,
 	}
@@ -61,8 +61,8 @@ func resourceVirtualEnvironmentClusterAliasCreate(d *schema.ResourceData, m inte
 
 	body := &proxmox.VirtualEnvironmentClusterAliasCreateRequestBody{
 		Comment: &comment,
-		Name: name,
-		CIDR: cidr,
+		Name:    name,
+		CIDR:    cidr,
 	}
 
 	err = veClient.CreateAlias(body)
@@ -98,8 +98,8 @@ func resourceVirtualEnvironmentClusterAliasRead(d *schema.ResourceData, m interf
 
 	aliasMap := map[string]interface{}{
 		mkResourceVirtualEnvironmentClusterAliasComment: alias.Comment,
-		mkResourceVirtualEnvironmentClusterAliasName: alias.Name,
-		mkResourceVirtualEnvironmentClusterAliasCIDR: alias.CIDR,
+		mkResourceVirtualEnvironmentClusterAliasName:    alias.Name,
+		mkResourceVirtualEnvironmentClusterAliasCIDR:    alias.CIDR,
 	}
 
 	for key, val := range aliasMap {
@@ -127,8 +127,8 @@ func resourceVirtualEnvironmentClusterAliasUpdate(d *schema.ResourceData, m inte
 	previousName := d.Id()
 
 	body := &proxmox.VirtualEnvironmentClusterAliasUpdateRequestBody{
-		ReName: newName,
-		CIDR: cidr,
+		ReName:  newName,
+		CIDR:    cidr,
 		Comment: &comment,
 	}
 
@@ -142,7 +142,6 @@ func resourceVirtualEnvironmentClusterAliasUpdate(d *schema.ResourceData, m inte
 
 	return resourceVirtualEnvironmentClusterAliasRead(d, m)
 }
-
 
 func resourceVirtualEnvironmentClusterAliasDelete(d *schema.ResourceData, m interface{}) error {
 	config := m.(ProviderConfiguration)
@@ -168,17 +167,3 @@ func resourceVirtualEnvironmentClusterAliasDelete(d *schema.ResourceData, m inte
 
 	return nil
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

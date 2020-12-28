@@ -10,7 +10,6 @@ import (
 	"testing"
 )
 
-
 // Verifies that an alias can be created and updated
 func TestAccResourceVirtualEnvironmentAlias_CreateAndUpdate(t *testing.T) {
 	aliasNameFirst := testutils.GenerateResourceName()

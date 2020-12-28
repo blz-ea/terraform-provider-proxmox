@@ -25,26 +25,26 @@ func resourceVirtualEnvironmentClusterIPSet() *schema.Resource {
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
 			mkResourceVirtualEnvironmentClusterIPSetName: {
-				Type: schema.TypeString,
+				Type:        schema.TypeString,
 				Description: "IPSet name",
-				Required: true,
-				ForceNew: false,
+				Required:    true,
+				ForceNew:    false,
 			},
 			mkResourceVirtualEnvironmentClusterIPSetCIDR: {
-				Type: schema.TypeList,
+				Type:        schema.TypeList,
 				Description: "List of IP or Networks",
-				Optional: true,
-				ForceNew: true,
+				Optional:    true,
+				ForceNew:    true,
 				DefaultFunc: func() (interface{}, error) {
 					return []interface{}{}, nil
 				},
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						mkResourceVirtualEnvironmentClusterIPSetCIDRName: {
-							Type: schema.TypeString,
+							Type:        schema.TypeString,
 							Description: "Network/IP specification in CIDR format",
-							Required: true,
-							ForceNew: true,
+							Required:    true,
+							ForceNew:    true,
 						},
 						mkResourceVirtualEnvironmentClusterIPSetCIDRNoMatch: {
 							Type:        schema.TypeBool,
@@ -71,7 +71,7 @@ func resourceVirtualEnvironmentClusterIPSet() *schema.Resource {
 			},
 		},
 		Create: resourceVirtualEnvironmentClusterIPSetCreate,
-		Read: resourceVirtualEnvironmentClusterIPSetRead,
+		Read:   resourceVirtualEnvironmentClusterIPSetRead,
 		Update: resourceVirtualEnvironmentClusterIPSetUpdate,
 		Delete: resourceVirtualEnvironmentClusterIPSetDelete,
 	}
@@ -95,10 +95,9 @@ func resourceVirtualEnvironmentClusterIPSetCreate(d *schema.ResourceData, m inte
 		IPSetMap := v.(map[string]interface{})
 		IPSetObject := proxmox.VirtualEnvironmentClusterIPSetGetResponseData{}
 
-		cidr 	:= IPSetMap[mkResourceVirtualEnvironmentClusterIPSetCIDRName].(string)
+		cidr := IPSetMap[mkResourceVirtualEnvironmentClusterIPSetCIDRName].(string)
 		noMatch := IPSetMap[mkResourceVirtualEnvironmentClusterIPSetCIDRNoMatch].(bool)
 		comment := IPSetMap[mkResourceVirtualEnvironmentClusterIPSetCIDRComment].(string)
-
 
 		IPSetObject.Comment = comment
 		IPSetObject.CIDR = cidr
@@ -108,13 +107,12 @@ func resourceVirtualEnvironmentClusterIPSetCreate(d *schema.ResourceData, m inte
 			IPSetObject.NoMatch = &noMatchBool
 		}
 
-
 		IPSetsArray[i] = IPSetObject
 	}
 
 	body := &proxmox.VirtualEnvironmentClusterIPSetCreateRequestBody{
 		Comment: comment,
-		Name: name,
+		Name:    name,
 	}
 
 	err = veClient.CreateIPSet(body)
@@ -167,7 +165,6 @@ func resourceVirtualEnvironmentClusterIPSetRead(d *schema.ResourceData, m interf
 		}
 	}
 
-
 	IPSet, err := veClient.GetListIPSetContent(name)
 
 	if err != nil {
@@ -179,7 +176,7 @@ func resourceVirtualEnvironmentClusterIPSetRead(d *schema.ResourceData, m interf
 		return err
 	}
 
-	for key, _ := range IPSet {
+	for key := range IPSet {
 		d.Set(mkResourceVirtualEnvironmentClusterIPSetCIDR, IPSet[key])
 	}
 
@@ -199,8 +196,8 @@ func resourceVirtualEnvironmentClusterIPSetUpdate(d *schema.ResourceData, m inte
 	previousName := d.Id()
 
 	body := &proxmox.VirtualEnvironmentClusterIPSetUpdateRequestBody{
-		ReName: previousName,
-		Name: newName,
+		ReName:  previousName,
+		Name:    newName,
 		Comment: &comment,
 	}
 
@@ -214,7 +211,6 @@ func resourceVirtualEnvironmentClusterIPSetUpdate(d *schema.ResourceData, m inte
 
 	return resourceVirtualEnvironmentClusterIPSetRead(d, m)
 }
-
 
 func resourceVirtualEnvironmentClusterIPSetDelete(d *schema.ResourceData, m interface{}) error {
 	config := m.(ProviderConfiguration)
@@ -257,17 +253,3 @@ func resourceVirtualEnvironmentClusterIPSetDelete(d *schema.ResourceData, m inte
 
 	return nil
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

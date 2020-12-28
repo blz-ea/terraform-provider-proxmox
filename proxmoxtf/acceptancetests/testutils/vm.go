@@ -11,8 +11,8 @@ import (
 )
 
 type VMStateAttributes struct {
-	NodeName 	string
-	VMID 		int
+	NodeName string
+	VMID     int
 }
 
 // readVM is helper function that reads VM
@@ -50,7 +50,7 @@ func GetVMFromState(s *terraform.State, resourceName string) (VMStateAttributes,
 
 	vmAttributes := VMStateAttributes{
 		NodeName: nodeName,
-		VMID: vmID,
+		VMID:     vmID,
 	}
 
 	return vmAttributes, nil

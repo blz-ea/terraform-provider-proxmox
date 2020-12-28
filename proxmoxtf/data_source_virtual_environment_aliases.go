@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	mkDataSourceVirtualEnvironmentClusterAliasesAliasIDs        = "alias_ids"
+	mkDataSourceVirtualEnvironmentClusterAliasesAliasIDs = "alias_ids"
 )
 
 func dataSourceVirtualEnvironmentClusterAliases() *schema.Resource {

@@ -17,7 +17,7 @@ import (
 // - (2) exist in Proxmox VE
 // - (3) has the correct name
 func CheckIPSetExists(IPSetContent proxmox.VirtualEnvironmentClusterIPSetContent) resource.TestCheckFunc {
-	return func (s *terraform.State) error {
+	return func(s *terraform.State) error {
 		res, ok := s.RootModule().Resources["proxmox_virtual_environment_cluster_ipset.ipset"]
 		if !ok {
 			return fmt.Errorf("Did not find IPSet in the TF state")
@@ -79,7 +79,7 @@ func readIPSet(clients proxmoxtf.ProviderConfiguration, identifier string) ([]*p
 }
 
 // HclIPSetResource HCL describing of a PVE IPSet resource
-func HclIPSetResource(name string, comment string, cidr proxmox.VirtualEnvironmentClusterIPSetContent) string  {
+func HclIPSetResource(name string, comment string, cidr proxmox.VirtualEnvironmentClusterIPSetContent) string {
 	var b bytes.Buffer
 
 	if name == "" {
@@ -87,9 +87,9 @@ func HclIPSetResource(name string, comment string, cidr proxmox.VirtualEnvironme
 	}
 
 	testRunData := map[string]interface{}{
-		"Name" : name,
+		"Name":    name,
 		"Comment": comment,
-		"CIDR" : cidr,
+		"CIDR":    cidr,
 	}
 
 	tmpl, err := template.New("").Parse(`
@@ -117,7 +117,7 @@ resource "proxmox_virtual_environment_cluster_ipset" "ipset" {
 }
 
 // HclIPSetWithAliasResource HCL describing of a PVE IPSet resource with alias
-func HclIPSetWithAliasResource(name string, comment string, cidr proxmox.VirtualEnvironmentClusterIPSetContent) string  {
+func HclIPSetWithAliasResource(name string, comment string, cidr proxmox.VirtualEnvironmentClusterIPSetContent) string {
 	alias := HclAliasResource("test-alias", "192.168.0.0/23", "alias-comment")
 	IPSet := HclIPSetResource(name, comment, cidr)
 

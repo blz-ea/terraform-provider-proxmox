@@ -11,7 +11,6 @@ import (
 	"testing"
 )
 
-
 // Verifies that an IP set can be created and updated
 func TestAccResourceVirtualEnvironmentIPSet_CreateAndUpdate(t *testing.T) {
 	IPSetNameFirst := testutils.GenerateResourceName()
@@ -35,8 +34,8 @@ func TestAccResourceVirtualEnvironmentIPSet_CreateAndUpdate(t *testing.T) {
 	tfNode := "proxmox_virtual_environment_cluster_ipset.ipset"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testutils.PreCheck(t, nil) },
-		Providers: testutils.GetProviders(),
+		PreCheck:     func() { testutils.PreCheck(t, nil) },
+		Providers:    testutils.GetProviders(),
 		CheckDestroy: CheckIPSetDestroyed,
 		Steps: []resource.TestStep{
 			// Create empty IPSet

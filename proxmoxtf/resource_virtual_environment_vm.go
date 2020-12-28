@@ -54,7 +54,7 @@ const (
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv4Gateway = ""
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv6Address = ""
 	dvResourceVirtualEnvironmentVMInitializationIPConfigIPv6Gateway = ""
-	dvResourceVirtualEnvironmentVMInitializationType				= ""
+	dvResourceVirtualEnvironmentVMInitializationType                = ""
 	dvResourceVirtualEnvironmentVMInitializationUserAccountPassword = ""
 	dvResourceVirtualEnvironmentVMInitializationUserDataFileID      = ""
 	dvResourceVirtualEnvironmentVMKeyboardLayout                    = "en-us"
@@ -133,7 +133,7 @@ const (
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6        = "ipv6"
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6Address = "address"
 	mkResourceVirtualEnvironmentVMInitializationIPConfigIPv6Gateway = "gateway"
-	mkResourceVirtualEnvironmentVMInitializationType				= "type"
+	mkResourceVirtualEnvironmentVMInitializationType                = "type"
 	mkResourceVirtualEnvironmentVMInitializationUserAccount         = "user_account"
 	mkResourceVirtualEnvironmentVMInitializationUserAccountKeys     = "keys"
 	mkResourceVirtualEnvironmentVMInitializationUserAccountPassword = "password"
@@ -2575,7 +2575,7 @@ func resourceVirtualEnvironmentVMReadCustom(d *schema.ResourceData, m interface{
 		} else {
 			initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
 		}
-	}  else if len(initialization) > 0 {
+	} else if len(initialization) > 0 {
 		initialization[mkResourceVirtualEnvironmentVMInitializationUserDataFileID] = ""
 	}
 

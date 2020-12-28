@@ -10,7 +10,6 @@ import (
 	"testing"
 )
 
-
 // Verifies that a role can be created and updated
 func TestAccResourceVirtualEnvironmentRole_CreateAndUpdate(t *testing.T) {
 	roleId := testutils.GenerateResourceName()
@@ -26,8 +25,8 @@ func TestAccResourceVirtualEnvironmentRole_CreateAndUpdate(t *testing.T) {
 	tfNode := "proxmox_virtual_environment_role.role"
 
 	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testutils.PreCheck(t, nil) },
-		Providers: testutils.GetProviders(),
+		PreCheck:     func() { testutils.PreCheck(t, nil) },
+		Providers:    testutils.GetProviders(),
 		CheckDestroy: CheckRoleDestroyed,
 		Steps: []resource.TestStep{
 			// Create role

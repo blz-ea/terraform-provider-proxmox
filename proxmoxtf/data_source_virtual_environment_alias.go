@@ -9,12 +9,11 @@ import (
 )
 
 const (
-	dvDataVirtualEnvironmentClusterAliasComment 	           = ""
+	dvDataVirtualEnvironmentClusterAliasComment = ""
 
-	mkDataSourceVirtualEnvironmentClusterAliasName             = "name"
-	mkDataSourceVirtualEnvironmentClusterAliasCIDR             = "cidr"
-	mkDataSourceVirtualEnvironmentClusterAliasComment          = "comment"
-
+	mkDataSourceVirtualEnvironmentClusterAliasName    = "name"
+	mkDataSourceVirtualEnvironmentClusterAliasCIDR    = "cidr"
+	mkDataSourceVirtualEnvironmentClusterAliasComment = "comment"
 )
 
 func dataSourceVirtualEnvironmentClusterAlias() *schema.Resource {
@@ -35,7 +34,6 @@ func dataSourceVirtualEnvironmentClusterAlias() *schema.Resource {
 				Description: "Alias comment",
 				Computed:    true,
 			},
-
 		},
 		Read: dataSourceVirtualEnvironmentAliasRead,
 	}

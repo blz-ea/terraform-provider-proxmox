@@ -13,7 +13,7 @@ import (
 var provider = proxmoxtf.Provider()
 
 // GetProvider returns the proxmox provider
-func GetProvider() *schema.Provider  {
+func GetProvider() *schema.Provider {
 	return provider
 }
 
@@ -47,4 +47,3 @@ func PreCheck(t *testing.T, extraEnvVars *[]string) {
 func GenerateResourceName() string {
 	return "test-" + acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 }
-
