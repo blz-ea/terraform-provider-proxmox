@@ -1,71 +1,67 @@
-[![Build Status](https://api.travis-ci.com/danitso/terraform-provider-proxmox.svg?branch=master)](https://travis-ci.com/danitso/terraform-provider-proxmox)
-[![Go Report Card](https://goreportcard.com/badge/github.com/danitso/terraform-provider-proxmox)](https://goreportcard.com/report/github.com/danitso/terraform-provider-proxmox)
-[![GoDoc](https://godoc.org/github.com/danitso/terraform-provider-proxmox?status.svg)](http://godoc.org/github.com/danitso/terraform-provider-proxmox)
-
 # Terraform Provider for Proxmox
+
+- Website: [terraform.io](https://registry.terraform.io/providers/blz-ea/proxmox/)
+
 A Terraform Provider which adds support for Proxmox solutions.
+ 
+<img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="300px">
 
 ## Requirements
-- [Terraform](https://www.terraform.io/downloads.html) 0.11+
-- [Go](https://golang.org/doc/install) 1.13 (to build the provider plugin)
-
-## Table of contents
-- [Building the Provider](#building-the-provider)
-- [Using the Provider](#using-the-provider)
-- [Developing the Provider](#developing-the-provider)
-- [Testing the Provider](#testing-the-provider)
-- [Known issues](#known-issues)
+- [Terraform](https://www.terraform.io/downloads.html) 0.13+
+- [Go](https://golang.org/doc/install) 1.15 (to build the provider plugin)
 
 ## Building the Provider
-Clone repository to: `$GOPATH/src/github.com/danitso/terraform-provider-proxmox`
+Clone repository to: `$GOPATH/src/github.com/blz-ea/terraform-provider-proxmox`
 
 ```sh
-$ mkdir -p $GOPATH/src/github.com/danitso; cd $GOPATH/src/github.com/danitso
-$ git clone git@github.com:danitso/terraform-provider-proxmox
+$ mkdir -p $GOPATH/src/github.com/blz-ea; cd $GOPATH/src/github.com/blz-ea
+$ git clone git@github.com:blz-ea/terraform-provider-proxmox
 ```
 
-Enter the provider directory, initialize and build the provider
-
+Since Terraform 0.13, all providers (including local ones) require a version and need to meet stricter load conditions. To simplify this there is a make target available which will handle building and putting the executable in the correct place.
 ```sh
-$ cd $GOPATH/src/github.com/danitso/terraform-provider-proxmox
-$ make init
-$ make build
+make build-and-install-dev-version
 ```
 
-## Using the Provider
-If you're building the provider, follow the instructions to [install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-plugins) After placing it into your plugins directory, run `terraform init` to initialize it.
+Once this completes, you will need to update your Terraform provider configuration to reference version 99.0.0 (the version of the development build) in order to use it. Example configuration:
 
-For more information, please refer to the [official documentation](http://danitso.com/terraform-provider-proxmox/).
+```hcl
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    proxmox = {
+      source = "blz-ea/proxmox"
+      version = "99.0.0"
+    }
+  }
+}
+```
+
+Be sure to remove any additional configuration from your `~/.terraformrc` and `.terraform` directories to prevent load issues. You will also need to update all `version` references to use 99.0.0 in order to fully initialise the development provider. If you see other versions (like the example below) you need to track them down and remove them.
+
+```
+Finding blz-ea/proxmox versions matching "99.0.0, ~> 0.*"...
+```
 
 ## Developing the Provider
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.13+ is *required*). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org)
+installed on your machine (version 1.15+ is *required*). You'll also need to
+correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well
+as adding `$GOPATH/bin` to your `$PATH`.
 
-To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+See above for which option suits your workflow for building the provider.
 
-```sh
-$ make build
-...
-$ $GOPATH/bin/terraform-provider-proxmox
-...
-```
-
-If you wish to contribute to the provider, please see [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Testing the Provider
-
-### Unit tests ###
-
-In order to run unit tests for the provider, you can simply run
+In order to test the provider, you can simply run `make test`.
 
 ```sh
 $ make test
 ```
 
-Tests are limited to regression tests, ensuring backwards compability.
+In order to run the full suite of Acceptance tests
 
-### Acceptance tests ### 
+**Note:** Acceptance tests provision real resources
 
-Acceptance tests require available Proxmox Virtual Environment.
+Acceptance tests require running Proxmox Virtual Environment.
 To run ant acceptance tests you need to set `PROXMOX_VE_ENDPOINT`, `PROXMOX_VE_USERNAME`, 
 `PROXMOX_VE_PASSWORD`, `PROXMOX_VE_INSECURE` environmental variables.
 
@@ -91,7 +87,7 @@ PROXMOX_VE_INSECURE='1'
 $ make testacc
 ```
 
-**Note:** Acceptance tests provision real resources
+If you wish to contribute to the provider, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Known issues
 
